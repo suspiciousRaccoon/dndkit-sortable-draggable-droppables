@@ -70,7 +70,7 @@ function App() {
       measuring={{ droppable: { strategy: MeasuringStrategy.Always } }}
       onDragEnd={handleDragEnd}>
       <div style={{ display: "flex", gap: "30px", margin: "auto" }}>
-        {mockData.board.lists.map((list, index) => {
+        {mockData.board.lists.map((list, _index) => {
           return <DroppableList id={list.id} key={list.id} list={list} />;
         })}
       </div>

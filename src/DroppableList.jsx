@@ -25,8 +25,7 @@ const DroppableList = (props) => {
         items={list.tasks}
         strategy={verticalListSortingStrategy}>
         <div ref={setNodeRef} style={style}>
-          {list.tasks.map((task, index) => {
-            console.log(task);
+          {list.tasks.map((task, _index) => {
             const { id: taskId, name: taskName } = task;
             return (
               <SortableItem
