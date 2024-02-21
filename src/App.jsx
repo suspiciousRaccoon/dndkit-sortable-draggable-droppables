@@ -55,7 +55,7 @@ const data = {
 
 function App() {
   const [mockData, setMockData] = useState(data.board);
-  const [mockData, setMockData] = useState(data);
+  const [activeId, setActiveId] = useState(null);
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -80,6 +80,11 @@ function App() {
       </div>
     </DndContext>
   );
+
+  function handleDragStart(event) {
+    setActiveId(event.active.id);
+    console.log(event.active.id);
+  }
 
   function handleDragEnd(event) {
     const { active, over } = event;
