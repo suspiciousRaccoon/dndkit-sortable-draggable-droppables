@@ -7,6 +7,7 @@ import {
   useSensor,
   useSensors,
   MeasuringStrategy,
+  DragOverlay,
 } from "@dnd-kit/core";
 import {
   arrayMove,
@@ -73,6 +74,9 @@ function App() {
         {mockData.board.lists.map((list, _index) => {
           return <DroppableList id={list.id} key={list.id} list={list} />;
         })}
+        <DragOverlay>
+          {activeId ? <div id={activeId}> {activeId} </div> : null}
+        </DragOverlay>
       </div>
     </DndContext>
   );
