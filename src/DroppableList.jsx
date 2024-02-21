@@ -7,11 +7,12 @@ import React from "react";
 import SortableItem from "./SortableItem";
 
 const DroppableList = (props) => {
-  const list = props.list;
-  const { isOver, setNodeRef } = useDroppable({ id: props.id });
+  const { id, list } = props;
+  const { isOver, setNodeRef } = useDroppable({ id });
 
   const style = {
-    background: "#dadada",
+    color: isOver ? "green" : undefined,
+    background: "#585858",
     padding: 10,
     margin: 10,
     flex: 1,
@@ -20,22 +21,23 @@ const DroppableList = (props) => {
     <div>
       <h1>{list.name}</h1>
       <SortableContext
+        id={id}
         items={list.tasks}
         strategy={verticalListSortingStrategy}>
-        {list.tasks.map((task, index) => {
-          const { id, name } = task;
-          return (
-            <SortableItem
-              key={id}
-              id={id}
-              children={<div>task name: {name}</div>}
-            />
-          );
-        })}
+        <div ref={setNodeRef} style={style}>
+          {list.tasks.map((task, index) => {
+            console.log(task);
+            const { id: taskId, name: taskName } = task;
+            return (
+              <SortableItem
+                key={taskId}
+                id={taskId}
+                children={<div>task name: {taskName}</div>}
+              />
+            );
+          })}
+        </div>
       </SortableContext>
-      <div ref={setNodeRef} style={style}>
-        {props.children}
-      </div>
     </div>
   );
 };

@@ -71,7 +71,7 @@ function App() {
       onDragEnd={handleDragEnd}>
       <div style={{ display: "flex", gap: "30px", margin: "auto" }}>
         {mockData.board.lists.map((list, index) => {
-          return <DroppableList id={list.id} list={list} />;
+          return <DroppableList id={list.id} key={list.id} list={list} />;
         })}
       </div>
     </DndContext>
@@ -101,6 +101,9 @@ function App() {
         );
 
         console.log(oldTaskIndex, newTaskIndex);
+
+        // if (condition) {
+        // }
 
         if (oldListId == newListId) {
           const sortedList = arrayMove(
