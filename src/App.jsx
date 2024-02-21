@@ -54,7 +54,7 @@ const data = {
 };
 
 function App() {
-  const [items, setItems] = useState([1, 2, 3]);
+  const [mockData, setMockData] = useState(data.board);
   const [mockData, setMockData] = useState(data);
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -87,7 +87,7 @@ function App() {
     if (active.id !== over.id) {
       console.log(`Active: ${active.id} | Over: ${over.id}`);
       setMockData((data) => {
-        const { lists } = data.board;
+        const { lists } = data;
         const newData = { ...data };
 
         // The id is a composite id. it contains the id of the list the task is from aswell as the id of the task. See: https://docs.dndkit.com/presets/sortable#multiple-containers
@@ -111,24 +111,20 @@ function App() {
 
         if (oldListId == newListId) {
           const sortedList = arrayMove(
-            newData.board.lists[oldListIndex].tasks,
+            newData.lists[oldListIndex].tasks,
             oldTaskIndex,
             newTaskIndex
           );
-          newData.board.lists[oldListIndex].tasks = sortedList;
+          newData.lists[oldListIndex].tasks = sortedList;
         } else {
-          const movedTask = newData.board.lists[oldListIndex].tasks.splice(
+          const movedTask = newData.lists[oldListIndex].tasks.splice(
             oldTaskIndex,
             1
           )[0];
 
           movedTask.id = `${newListId} ${oldTaskId}`;
 
-          newData.board.lists[newListIndex].tasks.splice(
-            newTaskIndex,
-            0,
-            movedTask
-          );
+          newData.lists[newListIndex].tasks.splice(newTaskIndex, 0, movedTask);
         }
         console.log("old");
         console.log(data);
