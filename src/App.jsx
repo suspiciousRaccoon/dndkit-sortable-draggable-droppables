@@ -67,8 +67,8 @@ function App() {
     <DndContext
       sensors={sensors}
       collisionDetection={closestCenter}
-      // onDragOver={handleDragEnd}
       measuring={{ droppable: { strategy: MeasuringStrategy.Always } }}
+      onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}>
       <div style={{ display: "flex", gap: "30px", margin: "auto" }}>
         {mockData.board.lists.map((list, _index) => {
