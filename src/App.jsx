@@ -81,6 +81,15 @@ function App() {
     </DndContext>
   );
 
+  function findContainer(taskId) {
+    for (const list of data.lists) {
+      if (list.tasks.some((task) => task.id === taskId)) {
+        return list.id;
+      }
+    }
+    return null;
+  }
+
   function handleDragStart(event) {
     setActiveId(event.active.id);
     console.log(event.active.id);
