@@ -86,6 +86,9 @@ function App() {
       if (list.tasks.some((task) => task.id === taskId)) {
         return list.id;
       }
+      if (list.id == containerId) {
+        return containerId;
+      }
     }
     return null;
   }
