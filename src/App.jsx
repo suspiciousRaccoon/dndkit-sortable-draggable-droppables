@@ -82,9 +82,9 @@ function App() {
     </DndContext>
   );
 
-  function findContainer(taskId) {
-    for (const list of data.lists) {
-      if (list.tasks.some((task) => task.id === taskId)) {
+  function findContainerId(containerId) {
+    for (const list of mockData.lists) {
+      if (list.tasks.some((task) => task.id === containerId)) {
         return list.id;
       }
       if (list.id == containerId) {
