@@ -166,57 +166,102 @@ function App() {
 
   function handleDragEnd(event) {
     const { active, over } = event;
+    const { id: activeTaskId } = active;
+    const { id: overTaskId } = over;
 
-    if (active.id !== over.id) {
-      console.log(`Active: ${active.id} | Over: ${over.id}`);
-      setMockData((data) => {
-        const { lists } = data;
-        const newData = { ...data };
+    const activeListId = findContainerId(activeTaskId);
+    const overListId = findContainerId(overTaskId);
 
-        // The id is a composite id. it contains the id of the list the task is from aswell as the id of the task. See: https://docs.dndkit.com/presets/sortable#multiple-containers
-        const [oldListId, oldTaskId] = active.id.split(" ");
-        const [newListId, newTaskId] = over.id.split(" ");
-
-        const oldListIndex = lists.findIndex((list) => list.id === oldListId);
-        const newListIndex = lists.findIndex((list) => list.id === newListId);
-
-        const oldTaskIndex = lists[oldListIndex].tasks.findIndex(
-          (task) => task.id === active.id
-        );
-        const newTaskIndex = lists[newListIndex].tasks.findIndex(
-          (task) => task.id === over.id
-        );
-
-        console.log(oldTaskIndex, newTaskIndex);
-
-        // if (condition) {
-        // }
-
-        if (oldListId == newListId) {
-          const sortedList = arrayMove(
-            newData.lists[oldListIndex].tasks,
-            oldTaskIndex,
-            newTaskIndex
-          );
-          newData.lists[oldListIndex].tasks = sortedList;
-        } else {
-          const movedTask = newData.lists[oldListIndex].tasks.splice(
-            oldTaskIndex,
-            1
-          )[0];
-
-          movedTask.id = `${newListId} ${oldTaskId}`;
-
-          newData.lists[newListIndex].tasks.splice(newTaskIndex, 0, movedTask);
-        }
-        console.log("old");
-        console.log(data);
-        console.log("new");
-        console.log(newData);
-        return newData;
-      });
+    if (!activeListId || !overListId || activeListId !== overListId) {
+      return;
     }
+
+    setMockData((draft) => {
+      const lists = draft.lists;
+
+      // find indexes of lists
+      const activeListIndex = lists.findIndex(
+        (list) => list.id === activeListId
+      );
+      const overListIndex = lists.findIndex((list) => list.id === overListId);
+
+      // get the lists
+      const activeTasks = lists[activeListIndex];
+      const overTasks = lists[overListIndex];
+      // console.log("activeTasks", activeTasks, "\n", "overTasks", overTasks);
+
+      // find indexes of tasks
+
+      const activeTaskIndex = activeTasks.tasks.findIndex(
+        (task) => task.id == activeTaskId
+      );
+      const overTaskIndex = overTasks.tasks.findIndex(
+        (task) => task.id == overTaskId
+      );
+      if (activeTaskIndex !== overTaskIndex) {
+        draft.lists[overListIndex].tasks = arrayMove(
+          draft.lists[overListIndex].tasks,
+          activeTaskIndex,
+          overTaskIndex
+        );
+      }
+    });
+    setActiveId(null);
   }
+
+  // function handleDragEnd(event) {
+  //   const { active, over } = event;
+
+  //   if (active.id !== over.id) {
+  //     console.log(`Active: ${active.id} | Over: ${over.id}`);
+  //     setMockData((data) => {
+  //       const { lists } = data;
+  //       const newData = { ...data };
+
+  //       // The id is a composite id. it contains the id of the list the task is from aswell as the id of the task. See: https://docs.dndkit.com/presets/sortable#multiple-containers
+  //       const [oldListId, oldTaskId] = active.id.split(" ");
+  //       const [newListId, newTaskId] = over.id.split(" ");
+
+  //       const oldListIndex = lists.findIndex((list) => list.id === oldListId);
+  //       const newListIndex = lists.findIndex((list) => list.id === newListId);
+
+  //       const oldTaskIndex = lists[oldListIndex].tasks.findIndex(
+  //         (task) => task.id === active.id
+  //       );
+  //       const newTaskIndex = lists[newListIndex].tasks.findIndex(
+  //         (task) => task.id === over.id
+  //       );
+
+  //       // console.log(oldTaskIndex, newTaskIndex);
+
+  //       // if (condition) {
+  //       // }
+
+  //       if (oldListId == newListId) {
+  //         const sortedList = arrayMove(
+  //           newData.lists[oldListIndex].tasks,
+  //           oldTaskIndex,
+  //           newTaskIndex
+  //         );
+  //         newData.lists[oldListIndex].tasks = sortedList;
+  //       } else {
+  //         const movedTask = newData.lists[oldListIndex].tasks.splice(
+  //           oldTaskIndex,
+  //           1
+  //         )[0];
+
+  //         movedTask.id = `${newListId} ${oldTaskId}`;
+
+  //         newData.lists[newListIndex].tasks.splice(newTaskIndex, 0, movedTask);
+  //       }
+  //       // console.log("old");
+  //       // console.log(data);
+  //       // console.log("new");
+  //       // console.log(newData);
+  //       return newData;
+  //     });
+  //   }
+  // }
 }
 
 export default App;
