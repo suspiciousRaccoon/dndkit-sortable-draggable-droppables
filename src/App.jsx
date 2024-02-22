@@ -103,8 +103,8 @@ function App() {
     const overListId = findContainerId(overTaskId);
 
     if (!activeListId || !overListId || activeListId === overListId) {
-      console.log(activeListId, overListId);
-      console.log(activeTaskId, overTaskId);
+      // console.log(activeListId, overListId);
+      // console.log(activeTaskId, overTaskId);
       return;
     }
     setMockData((draft) => {
