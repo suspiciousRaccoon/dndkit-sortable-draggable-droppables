@@ -67,7 +67,7 @@ function App() {
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}>
       <div style={{ display: "flex", gap: "30px", margin: "auto" }}>
-        {mockData.board.lists.map((list, _index) => {
+        {mockData.lists.map((list, _index) => {
           return <DroppableList id={list.id} key={list.id} list={list} />;
         })}
         <DragOverlay>
