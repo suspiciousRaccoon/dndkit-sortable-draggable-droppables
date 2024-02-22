@@ -96,6 +96,8 @@ function App() {
 
   function handleDragStart(event) {
     setActiveId(event.active.id);
+  }
+
   function handleDragOver(event) {
     // handles dragging over another list, otherwise returns
     const { active, over, draggingRect } = event;
