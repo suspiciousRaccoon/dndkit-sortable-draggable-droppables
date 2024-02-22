@@ -16,6 +16,8 @@ const DroppableList = (props) => {
     padding: 10,
     margin: 10,
     flex: 1,
+    minHeight: "50px",
+    minWidth: "50px",
   };
   return (
     <div>
