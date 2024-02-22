@@ -54,7 +54,7 @@ const data = {
 };
 
 function App() {
-  const [mockData, setMockData] = useState(data.board);
+  const [mockData, setMockData] = useImmer(data.board);
   const [activeId, setActiveId] = useState(null);
   const sensors = useSensors(
     useSensor(PointerSensor),
