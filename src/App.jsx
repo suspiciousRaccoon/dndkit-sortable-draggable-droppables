@@ -69,6 +69,7 @@ function App() {
       collisionDetection={closestCenter}
       measuring={{ droppable: { strategy: MeasuringStrategy.Always } }}
       onDragStart={handleDragStart}
+      onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}>
       <div style={{ display: "flex", gap: "30px", margin: "auto" }}>
         {mockData.board.lists.map((list, _index) => {
@@ -95,7 +96,72 @@ function App() {
 
   function handleDragStart(event) {
     setActiveId(event.active.id);
-    console.log(event.active.id);
+  function handleDragOver(event) {
+    // handles dragging over another list, otherwise returns
+    const { active, over, draggingRect } = event;
+    const { id: activeTaskId } = active;
+    const { id: overTaskId } = over;
+
+    const activeListId = findContainerId(activeTaskId);
+    const overListId = findContainerId(overTaskId);
+
+    if (!activeListId || !overListId || activeListId === overListId) {
+      console.log(activeListId, overListId);
+      console.log(activeTaskId, overTaskId);
+      return;
+    }
+    setMockData((draft) => {
+      const updatedLists = [...draft.lists];
+
+      // find indexes of lists
+      const activeListIndex = updatedLists.findIndex(
+        (list) => list.id === activeListId
+      );
+      const overListIndex = updatedLists.findIndex(
+        (list) => list.id === overListId
+      );
+
+      // get the lists
+      const activeTasks = updatedLists[activeListIndex];
+      const overTasks = updatedLists[overListIndex];
+
+      // find indexes of tasks
+
+      const activeTaskIndex = activeTasks.tasks.findIndex(
+        (task) => task.id == activeTaskId
+      );
+      const overTaskIndex = overTasks.tasks.findIndex(
+        (task) => task.id == overTaskId
+      );
+      let newIndex;
+      // check if the overListId is the id of a list, meaning the container is empty
+      if (updatedLists.some((list) => list.id === overListId)) {
+        // newIndex = overTasks.tasks.length + 1;
+        newIndex = 0;
+      } else {
+        const isBelowLastItem =
+          over &&
+          overTaskIndex === overTasks.tasks.length - 1 &&
+          // To see if the draggable is bein dragged below the last container
+          draggingRect.offsetTop > over.rect.offsetTop + over.rect.height;
+
+        const modifier = isBelowLastItem ? 1 : 0;
+
+        newIndex =
+          overTaskIndex >= 0
+            ? overTaskIndex + modifier
+            : overTasks.tasks.length + 1;
+      }
+      draft.lists[overListIndex].tasks.splice(
+        newIndex,
+        0,
+        activeTasks.tasks[activeTaskIndex]
+      );
+      // THE REMOVING OF THE TASK MUST GO AFTER, OTHERWISE EVERYTHING GOES KABOOM
+      draft.lists[activeListIndex].tasks = activeTasks.tasks.filter(
+        (task) => task.id !== activeTaskId
+      );
+    });
   }
 
   function handleDragEnd(event) {
