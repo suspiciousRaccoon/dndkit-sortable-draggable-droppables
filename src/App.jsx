@@ -9,15 +9,10 @@ import {
   MeasuringStrategy,
   DragOverlay,
 } from "@dnd-kit/core";
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
+import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 
-import { SortableItem } from "./SortableItem";
 import DroppableList from "./DroppableList";
+import { useImmer } from "use-immer";
 
 const data = {
   board: {
