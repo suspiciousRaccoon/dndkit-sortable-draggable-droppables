@@ -1,15 +1,20 @@
 import React, { useState } from "react";
 import {
   DndContext,
-  closestCenter,
   KeyboardSensor,
   PointerSensor,
   useSensor,
   useSensors,
   MeasuringStrategy,
   DragOverlay,
+  closestCorners,
 } from "@dnd-kit/core";
-import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
+import {
+  SortableContext,
+  arrayMove,
+  horizontalListSortingStrategy,
+  sortableKeyboardCoordinates,
+} from "@dnd-kit/sortable";
 
 import DroppableList from "./DroppableList";
 import { useImmer } from "use-immer";
@@ -59,22 +64,28 @@ function App() {
   );
 
   return (
+    <div style={{ display: "flex", gap: "30px", margin: "auto" }}>
+      <DndContext>
+        <SortableContext
+          items={mockData.lists}
+          strategy={horizontalListSortingStrategy}>
     <DndContext
       sensors={sensors}
-      collisionDetection={closestCenter}
+            collisionDetection={closestCorners}
       measuring={{ droppable: { strategy: MeasuringStrategy.Always } }}
       onDragStart={handleDragStart}
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}>
-      <div style={{ display: "flex", gap: "30px", margin: "auto" }}>
         {mockData.lists.map((list, _index) => {
           return <DroppableList id={list.id} key={list.id} list={list} />;
         })}
+          </DndContext>
+        </SortableContext>
+      </DndContext>
         <DragOverlay>
           {activeId ? <div id={activeId}> {activeId} </div> : null}
         </DragOverlay>
       </div>
-    </DndContext>
   );
 
   function findContainerId(containerId) {
