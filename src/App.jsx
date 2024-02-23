@@ -108,19 +108,17 @@ function App() {
       return;
     }
     setMockData((draft) => {
-      const updatedLists = [...draft.lists];
-
       // find indexes of lists
-      const activeListIndex = updatedLists.findIndex(
+      const activeListIndex = draft.lists.findIndex(
         (list) => list.id === activeListId
       );
-      const overListIndex = updatedLists.findIndex(
+      const overListIndex = draft.lists.findIndex(
         (list) => list.id === overListId
       );
 
       // get the lists
-      const activeTasks = updatedLists[activeListIndex];
-      const overTasks = updatedLists[overListIndex];
+      const activeTasks = draft.lists[activeListIndex];
+      const overTasks = draft.lists[overListIndex];
 
       // find indexes of tasks
 
@@ -132,9 +130,9 @@ function App() {
       );
       let newIndex;
       // check if the overListId is the id of a list, meaning the container is empty
-      if (updatedLists.some((list) => list.id === overListId)) {
-        // newIndex = overTasks.tasks.length + 1;
-        newIndex = 0;
+      if (draft.lists.some((list) => list.id === overListId)) {
+        newIndex = overTasks.tasks.length + 1;
+        // newIndex = 0;
       } else {
         const isBelowLastItem =
           over &&
