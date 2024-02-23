@@ -69,23 +69,23 @@ function App() {
         <SortableContext
           items={mockData.lists}
           strategy={horizontalListSortingStrategy}>
-    <DndContext
-      sensors={sensors}
+          <DndContext
+            sensors={sensors}
             collisionDetection={closestCorners}
-      measuring={{ droppable: { strategy: MeasuringStrategy.Always } }}
-      onDragStart={handleDragStart}
-      onDragOver={handleDragOver}
-      onDragEnd={handleDragEnd}>
-        {mockData.lists.map((list, _index) => {
-          return <DroppableList id={list.id} key={list.id} list={list} />;
-        })}
+            measuring={{ droppable: { strategy: MeasuringStrategy.Always } }}
+            onDragStart={handleDragStart}
+            onDragOver={handleDragOver}
+            onDragEnd={handleDragEnd}>
+            {mockData.lists.map((list, _index) => {
+              return <DroppableList id={list.id} key={list.id} list={list} />;
+            })}
           </DndContext>
         </SortableContext>
       </DndContext>
-        <DragOverlay>
-          {activeId ? <div id={activeId}> {activeId} </div> : null}
-        </DragOverlay>
-      </div>
+      <DragOverlay>
+        {activeId ? <div id={activeId}> {activeId} </div> : null}
+      </DragOverlay>
+    </div>
   );
 
   function findContainerId(containerId) {
@@ -194,7 +194,6 @@ function App() {
       // get the lists
       const activeTasks = lists[activeListIndex];
       const overTasks = lists[overListIndex];
-      // console.log("activeTasks", activeTasks, "\n", "overTasks", overTasks);
 
       // find indexes of tasks
 
@@ -214,60 +213,6 @@ function App() {
     });
     setActiveId(null);
   }
-
-  // function handleDragEnd(event) {
-  //   const { active, over } = event;
-
-  //   if (active.id !== over.id) {
-  //     console.log(`Active: ${active.id} | Over: ${over.id}`);
-  //     setMockData((data) => {
-  //       const { lists } = data;
-  //       const newData = { ...data };
-
-  //       // The id is a composite id. it contains the id of the list the task is from aswell as the id of the task. See: https://docs.dndkit.com/presets/sortable#multiple-containers
-  //       const [oldListId, oldTaskId] = active.id.split(" ");
-  //       const [newListId, newTaskId] = over.id.split(" ");
-
-  //       const oldListIndex = lists.findIndex((list) => list.id === oldListId);
-  //       const newListIndex = lists.findIndex((list) => list.id === newListId);
-
-  //       const oldTaskIndex = lists[oldListIndex].tasks.findIndex(
-  //         (task) => task.id === active.id
-  //       );
-  //       const newTaskIndex = lists[newListIndex].tasks.findIndex(
-  //         (task) => task.id === over.id
-  //       );
-
-  //       // console.log(oldTaskIndex, newTaskIndex);
-
-  //       // if (condition) {
-  //       // }
-
-  //       if (oldListId == newListId) {
-  //         const sortedList = arrayMove(
-  //           newData.lists[oldListIndex].tasks,
-  //           oldTaskIndex,
-  //           newTaskIndex
-  //         );
-  //         newData.lists[oldListIndex].tasks = sortedList;
-  //       } else {
-  //         const movedTask = newData.lists[oldListIndex].tasks.splice(
-  //           oldTaskIndex,
-  //           1
-  //         )[0];
-
-  //         movedTask.id = `${newListId} ${oldTaskId}`;
-
-  //         newData.lists[newListIndex].tasks.splice(newTaskIndex, 0, movedTask);
-  //       }
-  //       // console.log("old");
-  //       // console.log(data);
-  //       // console.log("new");
-  //       // console.log(newData);
-  //       return newData;
-  //     });
-  //   }
-  // }
 }
 
 export default App;
