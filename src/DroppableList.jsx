@@ -43,7 +43,7 @@ const DroppableList = (props) => {
         id={id}
         items={list.tasks}
         strategy={verticalListSortingStrategy}>
-        <div ref={setNodeRef} style={style}>
+        <div ref={setNodeRefDroppable} style={style}>
           {list.tasks.map((task, _index) => {
             const { id: taskId, name: taskName } = task;
             return (
